@@ -1,0 +1,295 @@
+<connections>
+	<connection name="MEDIADB">
+        <statement name="CREATE_TABLE_GNRL_HOST">
+			<![CDATA[
+			create table if not exists gnrl_host
+                (id INTEGER PRIMARY KEY, 
+                name TEXT NOT NULL, 
+                ip TEXT,
+                location TEXT,
+                cpu TEXT,
+                ram TEXT,
+                os TEXT,
+                UNIQUE (name, location)
+                )
+			]]>			
+		</statement>
+        <statement name="CREATE_TABLE_GNRL_DRIVE">
+			<![CDATA[
+			create table if not exists gnrl_drive
+                (id INTEGER PRIMARY KEY, 
+                name TEXT NOT NULL, 
+                uuid TEXT NOT NULL UNIQUE,
+                location TEXT,
+                partition TEXT,
+                mountpoint TEXT,
+                total_space INTEGER NOT NULL,
+                free_space INTEGER NOT NULL,
+                host_id INTEGER,
+                FOREIGN KEY(host_id) REFERENCES gnrl_host(id) on delete cascade
+                )
+			]]>			
+		</statement>
+        <statement name="CREATE_TABLE_GNRL_PATH">
+			<![CDATA[
+			create table if not exists gnrl_path 
+                (id INTEGER PRIMARY KEY, 
+                path TEXT NOT NULL UNIQUE, 
+                path_crc TEXT NOT NULL
+                )
+			]]>			
+		</statement>
+        <statement name="CREATE_TABLE_GNRL_PICTURE">
+			<![CDATA[
+			create table if not exists gnrl_picture 
+                (id INTEGER PRIMARY KEY, 
+                image_data BLOB, 
+                mime_type TEXT, 
+                name TEXT,
+                file_hash TEXT UNIQUE
+                )
+			]]>			
+		</statement>
+        <statement name="CREATE_TABLE_GNRL_FILE_TYPE">
+			<![CDATA[
+			create table if not exists gnrl_file_type 
+                (id INTEGER PRIMARY KEY,  
+                name TEXT NOT NULL, 
+                extension TEXT NOT NULL UNIQUE, 
+                description TEXT
+                )
+			]]>			
+		</statement>
+        <statement name="CREATE_TABLE_GNRL_LANGUAGE">
+			<![CDATA[
+			create table if not exists gnrl_language
+                (id INTEGER PRIMARY KEY,  
+                name TEXT, 
+                isocode TEXT NOT NULL UNIQUE
+                )
+			]]>			
+		</statement>
+        <statement name="CREATE_TABLE_GNRL_AUDIO_STREAM">
+			<![CDATA[
+			create table if not exists gnrl_audio_stream 
+                (id INTEGER PRIMARY KEY, 
+                file_id INTEGER NOT NULL, 
+                stream_index INTEGER NOT NULL, 
+                codec_id INTEGER NOT NULL,
+                language_id INTEGER NOT NULL,
+                bitrate INTEGER,
+                FOREIGN KEY(file_id) REFERENCES gnrl_file(id) on delete cascade,
+                FOREIGN KEY(codec_id) REFERENCES gnrl_codec(id) on delete cascade,
+                FOREIGN KEY(language_id) REFERENCES gnrl_language(id) on delete cascade,
+                UNIQUE (file_id, stream_index)
+                )
+			]]>			
+		</statement>
+        <statement name="CREATE_TABLE_GNRL_CODEC">
+			<![CDATA[
+			create table if not exists gnrl_codec 
+                (id INTEGER PRIMARY KEY,  
+                name TEXT, 
+                code TEXT NOT NULL UNIQUE, 
+                description TEXT
+                )
+			]]>			
+		</statement>
+        <statement name="CREATE_TABLE_GNRL_VIDEO_STREAM">
+			<![CDATA[
+			create table if not exists gnrl_video_stream 
+                (id INTEGER PRIMARY KEY, 
+                file_id INTEGER NOT NULL, 
+                stream_index INTEGER NOT NULL, 
+                codec_id INTEGER NOT NULL,
+                language_id INTEGER NOT NULL,
+                bitrate INTEGER,
+                width INTEGER,
+                height INTEGER,
+                framerate NUMERIC,
+                FOREIGN KEY(file_id) REFERENCES gnrl_file(id) on delete cascade,
+                FOREIGN KEY(codec_id) REFERENCES gnrl_codec(id) on delete cascade,
+                FOREIGN KEY(language_id) REFERENCES gnrl_language(id) on delete cascade,
+                UNIQUE (file_id, stream_index)
+                )
+			]]>			
+		</statement>
+        <statement name="CREATE_TABLE_GNRL_SUBTITLE_STREAM">
+			<![CDATA[
+			create table if not exists gnrl_subtitle_stream 
+                (id INTEGER PRIMARY KEY, 
+                file_id INTEGER NOT NULL, 
+                stream_index INTEGER NOT NULL, 
+                codec_id INTEGER NOT NULL,
+                language_id INTEGER NOT NULL,
+                FOREIGN KEY(file_id) REFERENCES gnrl_file(id) on delete cascade,
+                FOREIGN KEY(codec_id) REFERENCES gnrl_codec(id) on delete cascade,
+                FOREIGN KEY(language_id) REFERENCES gnrl_language(id) on delete cascade,
+                UNIQUE (file_id, stream_index)
+                )
+			]]>			
+		</statement>
+        <statement name="CREATE_TABLE_GNRL_FILE">
+			<![CDATA[
+			create table if not exists gnrl_file 
+                (id INTEGER PRIMARY KEY,  
+                name TEXT NOT NULL, 
+                size INTEGER NOT NULL, 
+                file_hash TEXT NOT NULL,
+                name_crc INTEGER NOT NULL,
+                file_type_id INTEGER NOT NULL, 
+                duration INTEGER,  
+                is_video BOOLEAN NOT NULL, 
+                modified_date DATE NOT NULL,
+                FOREIGN KEY(file_type_id) REFERENCES gnrl_file_type(id) on delete cascade,
+                UNIQUE (name, file_hash)
+                )
+			]]>			
+		</statement>
+        <statement name="CREATE_TABLE_GNRL_LINK_FILE_PATH">
+			<![CDATA[
+			create table if not exists gnrl_link_file_path
+                (file_id INTEGER NOT NULL,
+                path_id INTEGER NOT NULL,
+                FOREIGN KEY(file_id) REFERENCES gnrl_file(id) on delete cascade,
+                FOREIGN KEY(path_id) REFERENCES gnrl_path(id) on delete cascade,
+                UNIQUE (file_id, path_id)
+                )
+			]]>			
+		</statement>
+        <statement name="CREATE_TABLE_GNRL_LINK_FILE_DRIVE">
+			<![CDATA[
+			create table if not exists gnrl_link_file_drive
+                (file_id INTEGER NOT NULL,
+                drive_id INTEGER NOT NULL,
+                FOREIGN KEY(file_id) REFERENCES gnrl_file(id) on delete cascade,
+                FOREIGN KEY(drive_id) REFERENCES gnrl_drive(id) on delete cascade,
+                UNIQUE (file_id, drive_id)
+                )
+			]]>			
+		</statement>
+        <statement name="CREATE_TABLE_GNRL_LINK_PATH_DRIVE">
+			<![CDATA[
+			create table if not exists gnrl_link_path_drive
+                (path_id INTEGER NOT NULL,
+                drive_id INTEGER NOT NULL,
+                FOREIGN KEY(path_id) REFERENCES gnrl_path(id) on delete cascade,
+                FOREIGN KEY(drive_id) REFERENCES gnrl_drive(id) on delete cascade,
+                UNIQUE (path_id, drive_id)
+                )
+			]]>			
+		</statement>
+        <statement name="CREATE_TABLE_GNRL_LINK_FILE_PICTURE">
+			<![CDATA[
+			create table if not exists gnrl_link_file_picture
+                (
+                file_id INTEGER NOT NULL, 
+                picture_id INTEGER NOT NULL, 
+                FOREIGN KEY(file_id) REFERENCES gnrl_file(id) on delete cascade,
+                FOREIGN KEY(picture_id) REFERENCES gnrl_picture(id) on delete cascade,
+                UNIQUE (file_id, picture_id)
+                )
+			]]>			
+		</statement>
+		<statement name="CREATE_TABLE_MUSIC_GENRE">
+			<![CDATA[
+			create table if not exists music_genre 
+                (
+                id INTEGER PRIMARY KEY, 
+                name TEXT NOT NULL UNIQUE
+                )
+			]]>			
+		</statement>		
+        <statement name="CREATE_TABLE_MUSIC_ARTIST">
+			<![CDATA[
+			create table if not exists music_artist 
+                (
+                id INTEGER PRIMARY KEY, 
+                name TEXT NOT NULL UNIQUE
+                )
+			]]>			
+		</statement>
+        <statement name="CREATE_TABLE_MUSIC_ALBUM">
+			<![CDATA[
+			create table if not exists music_album 
+                (
+                id INTEGER PRIMARY KEY, 
+                name TEXT NOT NULL UNIQUE,
+                rating INTEGER
+                )
+			]]>			
+		</statement>       
+        <statement name="CREATE_TABLE_MUSIC_SONG">
+			<![CDATA[
+			create table if not exists music_song
+                (
+                id INTEGER PRIMARY KEY, 
+                name TEXT NOT NULL,
+                music_album_id INTEGER,
+                music_artist_id INTEGER,
+                music_genre_id INTEGER,
+                track INTEGER,
+                year INTEGER,
+                rating INTEGER,
+                file_id INTEGER NOT NULL,
+                FOREIGN KEY(music_album_id) REFERENCES music_album(id) on delete cascade,
+                FOREIGN KEY(music_artist_id) REFERENCES music_artist(id) on delete cascade,
+                FOREIGN KEY(music_genre_id) REFERENCES music_genre(id) on delete cascade,
+                FOREIGN KEY(file_id) REFERENCES gnrl_file(id) on delete cascade,
+                UNIQUE (name, music_album_id, music_artist_id)
+                )
+			]]>		
+		</statement>
+        <statement name="CREATE_TABLE_VIDEO_GENRE">
+			<![CDATA[
+			create table if not exists video_genre 
+                (
+                id INTEGER PRIMARY KEY, 
+                name TEXT NOT NULL UNIQUE
+                )
+			]]>			
+		</statement>		
+        <statement name="CREATE_TABLE_VIDEO_SHOW">
+			<![CDATA[
+			create table if not exists video_show
+                (
+                id INTEGER PRIMARY KEY, 
+                name TEXT NOT NULL UNIQUE,
+                picture_id INTEGER,
+                episodes INTEGER,
+                year INTEGER,
+                rating INTEGER,
+                FOREIGN KEY(picture_id) REFERENCES gnrl_picture(id) on delete cascade
+                )
+			]]>			
+		</statement>
+        <statement name="CREATE_TABLE_VIDEO_VIDEO">
+			<![CDATA[
+			create table if not exists video_video
+                (
+                id INTEGER PRIMARY KEY, 
+                name TEXT NOT NULL,
+                show_id INTEGER,
+                episode INTEGER,
+                year INTEGER,
+                rating INTEGER,
+                file_id INTEGER NOT NULL,
+                FOREIGN KEY(show_id) REFERENCES video_show(id) on delete cascade,
+                FOREIGN KEY(file_id) REFERENCES gnrl_file(id) on delete cascade
+                )
+			]]>		
+		</statement> 
+        <statement name="CREATE_TABLE_VIDEO_LINK_VIDEO_GENRE">
+			<![CDATA[
+			create table if not exists video_link_video_genre
+                (
+                video_id INTEGER NOT NULL, 
+                video_genre_id INTEGER NOT NULL, 
+                FOREIGN KEY(video_id) REFERENCES video_video(id) on delete cascade,
+                FOREIGN KEY(video_genre_id) REFERENCES video_genre(id) on delete cascade,
+                UNIQUE (video_id, video_genre_id)
+                )
+			]]>			
+		</statement>       
+	</connection>
+</connections>

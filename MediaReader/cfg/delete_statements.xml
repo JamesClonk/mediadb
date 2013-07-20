@@ -1,0 +1,26 @@
+<connections>
+	<connection name="MEDIADB">
+        <statement name="SELECT_ALL_FILES_BY_PATH_AND_DRIVE">
+			<![CDATA[
+			select 
+                f.id as file_id, p.id as path_id, d.id as drive_id,
+                d.mountpoint ||
+                p.path || '/' ||
+                f.name as file
+            from gnrl_file f
+            join gnrl_link_file_path flp on (f.id = flp.file_id)  
+            join gnrl_link_file_drive fld on (f.id = fld.file_id)
+            join gnrl_path p on (flp.path_id = p.id)
+            join gnrl_drive d on (fld.drive_id = d.id)
+            where d.mountpoint = :MOUNTPOINT
+            and p.path like :PATH
+			]]>
+		</statement>
+        <statement name="DELETE_FROM_GNRL_FILE_BY_FILE_ID">
+			<![CDATA[
+			delete from gnrl_file
+            where id = :FILE_ID
+			]]>
+		</statement>
+	</connection>
+</connections>

@@ -1,0 +1,52 @@
+<connections>
+	<connection name="MEDIADB">
+        <statement name="CREATE_INDEX_MUSIC_SONG_ALBUM_ID">
+			<![CDATA[
+			create index if not exists idx_music_song_album_id
+                on music_song (music_album_id)
+			]]>		
+		</statement>
+        <statement name="CREATE_INDEX_MUSIC_SONG_ARTIST_ID">
+			<![CDATA[
+            create index if not exists idx_music_song_artist_id
+                on music_song (music_artist_id)
+			]]>		
+		</statement>
+        <statement name="CREATE_INDEX_MUSIC_SONG_GENRE_ID">
+			<![CDATA[
+            create index if not exists idx_music_song_genre_id
+                on music_song (music_genre_id)
+			]]>		
+		</statement>
+        <statement name="CREATE_INDEX_GNRL_AUDIO_STREAM_LANGUAGE_ID">
+			<![CDATA[
+            create index if not exists idx_gnrl_audio_stream_language_id
+                on gnrl_audio_stream (language_id)
+			]]>		
+		</statement>
+        <statement name="CREATE_INDEX_GNRL_VIDEO_STREAM_LANGUAGE_ID">
+			<![CDATA[
+            create index if not exists idx_gnrl_video_stream_language_id
+                on gnrl_video_stream (language_id)
+			]]>		
+		</statement>
+        <statement name="CREATE_INDEX_GNRL_SUBTITLE_STREAM_LANGUAGE_ID">
+			<![CDATA[
+            create index if not exists idx_gnrl_subtitle_stream_language_id
+                on gnrl_subtitle_stream (language_id)
+			]]>		
+		</statement>
+        <statement name="CREATE_INDEX_GNRL_FILE_FILE_HASH">
+			<![CDATA[
+            create index if not exists idx_gnrl_file_file_hash
+                on gnrl_file (file_hash)
+			]]>		
+		</statement>
+        <statement name="CREATE_INDEX_GNRL_FILE_IS_VIDEO">
+			<![CDATA[
+            create index if not exists idx_gnrl_file_is_video
+                on gnrl_file (is_video)
+			]]>		
+		</statement>
+	</connection>
+</connections>

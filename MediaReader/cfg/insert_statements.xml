@@ -1,0 +1,328 @@
+<connections>
+	<connection name="MEDIADB">
+        <statement name="INSERT_INTO_MUSIC_ARTIST">
+			<![CDATA[
+			insert into music_artist
+                (name)
+            values (:NAME)
+			]]>			
+		</statement>
+        <statement name="SELECT_FROM_MUSIC_ARTIST">
+			<![CDATA[
+			select * 
+            from music_artist 
+            where name = :NAME
+			]]>			
+		</statement> 
+        <statement name="INSERT_INTO_MUSIC_GENRE">
+			<![CDATA[
+			insert into music_genre
+                (name)
+            values (:NAME)
+			]]>			
+		</statement>
+        <statement name="SELECT_FROM_MUSIC_GENRE">
+			<![CDATA[
+			select * 
+            from music_genre 
+            where name = :NAME
+			]]>			
+		</statement> 
+        <statement name="INSERT_INTO_MUSIC_ALBUM">
+			<![CDATA[
+			insert into music_album
+                (name,rating)
+            values (:NAME,:RATING)
+			]]>			
+		</statement>
+        <statement name="SELECT_FROM_MUSIC_ALBUM">
+			<![CDATA[
+			select * 
+            from music_album
+            where name = :NAME
+			]]>			
+		</statement>
+        <statement name="INSERT_INTO_MUSIC_SONG">
+			<![CDATA[
+			insert into music_song
+                (name,music_album_id,music_artist_id,music_genre_id,track,year,rating,file_id)
+            values (:NAME,:MUSIC_ALBUM_ID,:MUSIC_ARTIST_ID,:MUSIC_GENRE_ID,:TRACK,:YEAR,:RATING,:FILE_ID)
+			]]>			
+		</statement>
+        <statement name="SELECT_FROM_MUSIC_SONG">
+			<![CDATA[
+			select * 
+            from music_song
+            where name = :NAME
+            and music_album_id = :MUSIC_ALBUM_ID
+            and music_artist_id = :MUSIC_ARTIST_ID
+			]]>			
+		</statement>
+        <statement name="INSERT_INTO_GNRL_VIDEO_STREAM">
+			<![CDATA[
+			insert into gnrl_video_stream
+                (file_id,stream_index,codec_id,language_id,bitrate,width,height,framerate)
+            values (:FILE_ID,:STREAM_INDEX,:CODEC_ID,:LANGUAGE_ID,:BITRATE,:WIDTH,:HEIGHT,:FRAMERATE)
+			]]>
+		</statement>
+        <statement name="SELECT_FROM_GNRL_VIDEO_STREAM">
+			<![CDATA[
+			select * 
+            from gnrl_video_stream
+            where file_id = :FILE_ID
+            and stream_index = :STREAM_INDEX
+			]]>			
+		</statement>
+        <statement name="INSERT_INTO_GNRL_AUDIO_STREAM">
+			<![CDATA[
+			insert into gnrl_audio_stream
+                (file_id,stream_index,codec_id,language_id,bitrate)
+            values (:FILE_ID,:STREAM_INDEX,:CODEC_ID,:LANGUAGE_ID,:BITRATE)
+			]]>
+		</statement>
+        <statement name="SELECT_FROM_GNRL_AUDIO_STREAM">
+			<![CDATA[
+			select * 
+            from gnrl_audio_stream
+            where file_id = :FILE_ID
+            and stream_index = :STREAM_INDEX
+			]]>			
+		</statement>
+        <statement name="INSERT_INTO_GNRL_SUBTITLE_STREAM">
+			<![CDATA[
+			insert into gnrl_subtitle_stream
+                (file_id,stream_index,codec_id,language_id)
+            values (:FILE_ID,:STREAM_INDEX,:CODEC_ID,:LANGUAGE_ID)
+			]]>
+		</statement>
+        <statement name="SELECT_FROM_GNRL_SUBTITLE_STREAM">
+			<![CDATA[
+			select * 
+            from gnrl_subtitle_stream
+            where file_id = :FILE_ID
+            and stream_index = :STREAM_INDEX
+			]]>			
+		</statement>   
+        <statement name="UPDATE_GNRL_CODEC_BY_ID">
+			<![CDATA[
+			update gnrl_codec
+            set name = :NAME,
+            code = :CODE,
+            description = :DESCRIPTION
+            where id = :ID
+			]]>			
+		</statement>        
+        <statement name="INSERT_INTO_GNRL_CODEC">
+			<![CDATA[
+			insert into gnrl_codec
+                (name,code,description)
+            values (:NAME,:CODE,:DESCRIPTION)
+			]]>			
+		</statement>
+        <statement name="SELECT_FROM_GNRL_CODEC">
+			<![CDATA[
+			select * 
+            from gnrl_codec
+            where code = :CODE
+			]]>			
+		</statement>
+		<statement name="INSERT_INTO_GNRL_DRIVE">
+			<![CDATA[
+			insert into gnrl_drive 
+                (name,uuid,location,mountpoint,partition,total_space,free_space,host_id)
+            values (:NAME,:UUID,:LOCATION,:MOUNTPOINT,:PARTITION,:TOTAL_SPACE,:FREE_SPACE,:HOST_ID)
+			]]>			
+		</statement>
+        <statement name="SELECT_FROM_GNRL_DRIVE">
+			<![CDATA[
+			select * 
+            from gnrl_drive 
+            where uuid = :UUID
+			]]>			
+		</statement> 
+        <statement name="UPDATE_GNRL_DRIVE_BY_UUID">
+			<![CDATA[
+			update gnrl_drive
+            set name = :NAME,
+            location = :LOCATION,
+            mountpoint = :MOUNTPOINT,
+            partition = :PARTITION,
+            total_space = :TOTAL_SPACE,
+            free_space = :FREE_SPACE,
+            host_id = :HOST_ID
+            where uuid = :UUID
+			]]>			
+		</statement>
+        <statement name="INSERT_INTO_GNRL_HOST">
+			<![CDATA[
+			insert into gnrl_host
+                (name,ip,location,cpu,ram,os)
+            values (:NAME,:IP,:LOCATION,:CPU,:RAM,:OS)
+			]]>			
+		</statement>
+        <statement name="SELECT_FROM_GNRL_HOST">
+			<![CDATA[
+			select * 
+            from gnrl_host
+            where name = :NAME
+            and location = :LOCATION
+			]]>			
+		</statement> 
+        <statement name="UPDATE_GNRL_HOST_BY_NAME_AND_LOCATION">
+			<![CDATA[
+			update gnrl_host
+            set ip = :IP,
+            cpu = :CPU,
+            ram = :RAM,
+            os = :OS
+            where name = :NAME
+            and location = :LOCATION
+			]]>			
+		</statement>        
+        <statement name="INSERT_INTO_GNRL_PATH">
+			<![CDATA[
+			insert into gnrl_path
+                (path,path_crc)
+            values (:PATH,:PATH_CRC)
+			]]>			
+		</statement>
+        <statement name="SELECT_FROM_GNRL_PATH">
+			<![CDATA[
+			select * 
+            from gnrl_path 
+            where path = :PATH
+			]]>			
+		</statement>  
+        <statement name="INSERT_INTO_GNRL_FILE_TYPE">
+			<![CDATA[
+			insert into gnrl_file_type
+                (name,extension,description)
+            values (:NAME,:EXTENSION,:DESCRIPTION)
+			]]>			
+		</statement>
+        <statement name="SELECT_FROM_GNRL_FILE_TYPE">
+			<![CDATA[
+			select * 
+            from gnrl_file_type 
+            where extension = :EXTENSION
+			]]>			
+		</statement>   
+        <statement name="INSERT_INTO_GNRL_LANGUAGE">
+			<![CDATA[
+			insert into gnrl_language
+                (name,isocode)
+            values (:NAME,:ISOCODE)
+			]]>			
+		</statement>
+        <statement name="SELECT_FROM_GNRL_LANGUAGE">
+			<![CDATA[
+			select * 
+            from gnrl_language
+            where isocode = :ISOCODE
+			]]>			
+		</statement>
+        <statement name="UPDATE_GNRL_FILE_BY_ID">
+			<![CDATA[
+			update gnrl_file
+            set name = :NAME,
+            size = :SIZE,
+            file_hash = :FILE_HASH,
+            name_crc = :NAME_CRC,
+            file_type_id = :FILE_TYPE_ID,
+            duration = :DURATION,
+            is_video = :IS_VIDEO,
+            modified_date = :MODIFIED_DATE
+            where id = :ID
+			]]>			
+		</statement>
+        <statement name="INSERT_INTO_GNRL_FILE">
+			<![CDATA[
+			insert into gnrl_file
+                (name,size,file_hash,name_crc,file_type_id,duration,is_video,modified_date)
+            values (:NAME,:SIZE,:FILE_HASH,:NAME_CRC,:FILE_TYPE_ID,:DURATION,:IS_VIDEO,:MODIFIED_DATE)
+			]]>			
+		</statement>
+        <statement name="SELECT_FROM_GNRL_FILE">
+			<![CDATA[
+			select * 
+            from gnrl_file 
+            where name = :NAME
+            and file_hash = :FILE_HASH
+			]]>			
+		</statement>
+        <statement name="INSERT_INTO_GNRL_PICTURE">
+			<![CDATA[
+			insert into gnrl_picture
+                (image_data,mime_type,name,file_hash)
+            values (:IMAGE_DATA,:MIME_TYPE,:NAME,:FILE_HASH)
+			]]>			
+		</statement>
+        <statement name="SELECT_FROM_GNRL_PICTURE">
+			<![CDATA[
+			select * 
+            from gnrl_picture 
+            where file_hash = :FILE_HASH
+			]]>			
+		</statement>
+        <statement name="INSERT_INTO_GNRL_LINK_FILE_DRIVE">
+			<![CDATA[
+			insert into gnrl_link_file_drive
+                (file_id,drive_id)
+            values (:FILE_ID,:DRIVE_ID)
+			]]>			
+		</statement>
+        <statement name="SELECT_FROM_GNRL_LINK_FILE_DRIVE">
+			<![CDATA[
+			select * 
+            from gnrl_link_file_drive
+            where file_id = :FILE_ID
+            and drive_id = :DRIVE_ID
+			]]>			
+		</statement>
+        <statement name="INSERT_INTO_GNRL_LINK_FILE_PATH">
+			<![CDATA[
+			insert into gnrl_link_file_path
+                (file_id,path_id)
+            values (:FILE_ID,:PATH_ID)
+			]]>			
+		</statement>
+        <statement name="SELECT_FROM_GNRL_LINK_FILE_PATH">
+			<![CDATA[
+			select * 
+            from gnrl_link_file_path
+            where file_id = :FILE_ID
+            and path_id = :PATH_ID
+			]]>			
+		</statement>   
+        <statement name="INSERT_INTO_GNRL_LINK_PATH_DRIVE">
+			<![CDATA[
+			insert into gnrl_link_path_drive
+                (path_id,drive_id)
+            values (:PATH_ID,:DRIVE_ID)
+			]]>			
+		</statement>
+        <statement name="SELECT_FROM_GNRL_LINK_PATH_DRIVE">
+			<![CDATA[
+			select * 
+            from gnrl_link_path_drive
+            where path_id = :PATH_ID
+            and drive_id = :DRIVE_ID
+			]]>			
+		</statement> 
+        <statement name="INSERT_INTO_GNRL_LINK_FILE_PICTURE">
+			<![CDATA[
+			insert into gnrl_link_file_picture
+                (file_id,picture_id)
+            values (:FILE_ID,:PICTURE_ID)
+			]]>			
+		</statement>
+        <statement name="SELECT_FROM_GNRL_LINK_FILE_PICTURE">
+			<![CDATA[
+			select * 
+            from gnrl_link_file_picture
+            where file_id = :FILE_ID
+            and picture_id = :PICTURE_ID
+			]]>			
+		</statement>           
+	</connection>
+</connections>
